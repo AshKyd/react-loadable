@@ -15,11 +15,12 @@
     "test": "jest --coverage",
     "build": "babel src -d lib",
     "start": "yarn build && webpack && babel-node example/server.js",
-    "prepublish": "yarn build",
-    "preinstall": "npm run build"
+    "prepublish": "yarn build"
   },
   "dependencies": {
-    "prop-types": "^15.5.0",
+    "prop-types": "^15.5.0"
+  },
+  "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-loader": "^7.1.2",
     "babel-plugin-dynamic-import-node": "^1.1.0",
@@ -37,8 +38,6 @@
     "react-dom": "^16.0.0",
     "react-test-renderer": "^16.0.0",
     "webpack": "^3.6.0"
-  },
-  "devDependencies": {
   },
   "peerDependencies": {
     "react": "*"
