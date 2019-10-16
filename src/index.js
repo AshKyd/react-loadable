@@ -135,17 +135,19 @@ function createLoadableComponent(loadFn, options) {
   }
 
   return class LoadableComponent extends React.Component {
-    constructor(props) {
-      super(props);
+    constructor(props, context) {
+      super(props, context);
       init();
 
       this.state = {
         error: res.error,
-        pastDelay: false,
+        pastDelay: opts.delay === 0,
         timedOut: false,
         loading: res.loading,
         loaded: res.loaded
       };
+      this._mounted = true;
+      this._loadModule();
     }
 
     static contextTypes = {
@@ -158,12 +160,7 @@ function createLoadableComponent(loadFn, options) {
       return init();
     }
 
-    componentWillMount() {
-      this._mounted = true;
-      this._loadModule();
-    }
-
-    _loadModule() {
+    _loadModule(setState) {
       if (this.context.loadable && Array.isArray(opts.modules)) {
         opts.modules.forEach(moduleName => {
           this.context.loadable.report(moduleName);
@@ -175,9 +172,8 @@ function createLoadableComponent(loadFn, options) {
       }
 
       if (typeof opts.delay === "number") {
-        if (opts.delay === 0) {
-          this.setState({ pastDelay: true });
-        } else {
+
+        if (opts.delay !== 0) {
           this._delay = setTimeout(() => {
             this.setState({ pastDelay: true });
           }, opts.delay);
